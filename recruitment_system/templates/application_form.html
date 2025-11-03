@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if application %}Başvuru Düzenle{% else %}Yeni Başvuru{% endif %}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            color: #333;
+        }
+        .nav {
+            margin-bottom: 20px;
+        }
+        .nav a {
+            text-decoration: none;
+            color: #007bff;
+        }
+        form {
+            background-color: white;
+            padding: 30px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .cancel {
+            background-color: #6c757d;
+            margin-left: 10px;
+            padding: 12px 30px;
+            text-decoration: none;
+            color: white;
+            border-radius: 5px;
+            display: inline-block;
+        }
+        .cancel:hover {
+            background-color: #5a6268;
+        }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <a href="{% url 'application_list' %}">← Başvurular Listesi</a>
+    </div>
+
+    <h1>{% if application %}Başvuru Düzenle{% else %}Yeni Başvuru Ekle{% endif %}</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label for="job_posting">İş İlanı:</label>
+            <select id="job_posting" name="job_posting" required>
+                <option value="">Seçiniz...</option>
+                {% for job in jobs %}
+                <option value="{{ job.pk }}" {% if application.job_posting.pk == job.pk %}selected{% endif %}>
+                    {{ job.title }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="candidate">Aday:</label>
+            <select id="candidate" name="candidate" required>
+                <option value="">Seçiniz...</option>
+                {% for candidate in candidates %}
+                <option value="{{ candidate.pk }}" {% if application.candidate.pk == candidate.pk %}selected{% endif %}>
+                    {{ candidate.first_name }} {{ candidate.last_name }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="status">Durum:</label>
+            <select id="status" name="status" required>
+                <option value="pending" {% if application.status == 'pending' %}selected{% endif %}>Beklemede</option>
+                <option value="reviewing" {% if application.status == 'reviewing' %}selected{% endif %}>İnceleniyor</option>
+                <option value="interview" {% if application.status == 'interview' %}selected{% endif %}>Mülakat</option>
+                <option value="accepted" {% if application.status == 'accepted' %}selected{% endif %}>Kabul Edildi</option>
+                <option value="rejected" {% if application.status == 'rejected' %}selected{% endif %}>Reddedildi</option>
+            </select>
+        </div>
+
+        <button type="submit">Kaydet</button>
+        <a href="{% url 'application_list' %}" class="cancel">İptal</a>
+    </form>
+</body>
+</html>>
