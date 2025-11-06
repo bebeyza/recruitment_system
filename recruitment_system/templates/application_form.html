@@ -4,53 +4,52 @@
 
 {% block content %}
 <div class="container">
-    <div class="form-contaier">
-       <h1>{% if application %}Başvuru Düzenle{% else %}Yeni Başvuru Ekle{% endif %}</h1>
+    <div class="form-container">
+        <h1>{% if application %}Başvuru Düzenle{% else %}Yeni Başvuru Ekle{% endif %}</h1>
 
-       <form method="POST">
-          {% csrf_token %}
+        <form method="POST">
+            {% csrf_token %}
 
-        <div class="form-group">
-            <label for="job_posting">İş İlanı:</label>
-            <input type="select" id="title" name="title" class="form-control" value="{{ application }}" required>
-            <select id="job_posting" name="job_posting" required>
-                <option value="">Seçiniz...</option>
-                {% for job in jobs %}
-                <option value="{{ job.pk }}" {% if application.job_posting.pk == job.pk %}selected{% endif %}>
-                    {{ job.title }}
-                </option>
-                {% endfor %}
-            </select>
-        </div>
+            <div class="form-group">
+                <label for="job_posting">İş İlanı *</label>
+                <select id="job_posting" name="job_posting" class="form-control" required>
+                    <option value="">Seçiniz...</option>
+                    {% for job in jobs %}
+                    <option value="{{ job.pk }}" {% if application.job_posting.pk == job.pk %}selected{% endif %}>
+                        {{ job.title }} - {{ job.location }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
 
-        <div class="form-group">
-            <label for="candidate">Aday:</label>
-            <select id="candidate" name="candidate" required>
-                <option value="">Seçiniz...</option>
-                {% for candidate in candidates %}
-                <option value="{{ candidate.pk }}" {% if application.candidate.pk == candidate.pk %}selected{% endif %}>
-                    {{ candidate.first_name }} {{ candidate.last_name }}
-                </option>
-                {% endfor %}
-            </select>
-        </div>
+            <div class="form-group">
+                <label for="candidate">Aday *</label>
+                <select id="candidate" name="candidate" class="form-control" required>
+                    <option value="">Seçiniz...</option>
+                    {% for candidate in candidates %}
+                    <option value="{{ candidate.pk }}" {% if application.candidate.pk == candidate.pk %}selected{% endif %}>
+                        {{ candidate.first_name }} {{ candidate.last_name }} ({{ candidate.email }})
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
 
-        <div class="form-group">
-            <label for="status">Durum:</label>
-            <select id="status" name="status" required>
-                <option value="pending" {% if application.status == 'pending' %}selected{% endif %}>Beklemede</option>
-                <option value="reviewing" {% if application.status == 'reviewing' %}selected{% endif %}>İnceleniyor</option>
-                <option value="interview" {% if application.status == 'interview' %}selected{% endif %}>Mülakat</option>
-                <option value="accepted" {% if application.status == 'accepted' %}selected{% endif %}>Kabul Edildi</option>
-                <option value="rejected" {% if application.status == 'rejected' %}selected{% endif %}>Reddedildi</option>
-            </select>
-        </div>
+            <div class="form-group">
+                <label for="status">Durum *</label>
+                <select id="status" name="status" class="form-control" required>
+                    <option value="pending" {% if application.status == 'pending' %}selected{% endif %}>⏳ Beklemede</option>
+                    <option value="reviewing" {% if application.status == 'reviewing' %}selected{% endif %}>📋 İnceleniyor</option>
+                    <option value="interview" {% if application.status == 'interview' %}selected{% endif %}>💼 Mülakat</option>
+                    <option value="accepted" {% if application.status == 'accepted' %}selected{% endif %}>✅ Kabul Edildi</option>
+                    <option value="rejected" {% if application.status == 'rejected' %}selected{% endif %}>❌ Reddedildi</option>
+                </select>
+            </div>
 
-        <div class="form-buttons">
+            <div class="form-buttons">
                 <button type="submit" class="btn btn-primary">💾 Kaydet</button>
-                <a href="{% url 'application_list' %}" class="btn btn-secondary">❌ İptal</a>
-        </div>
-      </form>
+                <a href="{% url 'application_list' %}" class="btn btn-secondary">↩️ İptal</a>
+            </div>
+        </form>
     </div>
 </div>
 {% endblock %}
