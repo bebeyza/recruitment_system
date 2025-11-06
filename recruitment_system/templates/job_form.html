@@ -1,108 +1,35 @@
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% if job %}İş İlanı Düzenle{% else %}Yeni İş İlanı{% endif %}</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f5f5f5;
-        }
-        h1 {
-            color: #333;
-        }
-        .nav {
-            margin-bottom: 20px;
-        }
-        .nav a {
-            text-decoration: none;
-            color: #007bff;
-        }
-        form {
-            background-color: white;
-            padding: 30px;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-            color: #333;
-        }
-        input[type="text"],
-        textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
-        textarea {
-            min-height: 100px;
-            resize: vertical;
-        }
-        button {
-            background-color: #007bff;
-            color: white;
-            padding: 12px 30px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-        .cancel {
-            background-color: #6c757d;
-            margin-left: 10px;
-            padding: 12px 30px;
-            text-decoration: none;
-            color: white;
-            border-radius: 5px;
-            display: inline-block;
-        }
-        .cancel:hover {
-            background-color: #5a6268;
-        }
-    </style>
-</head>
-<body>
-    <div class="nav">
-        <a href="{% url 'job_list' %}">← İş İlanları Listesi</a>
+{% extends 'base.html' %}
+
+{% block title %}{% if job %}İş İlanı Düzenle{% else %}Yeni İş İlanı{% endif %}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="form-container">
+        <h1>{% if job %}İş İlanı Düzenle{% else %}Yeni İş İlanı Ekle{% endif %}</h1>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="title">İş Başlığı *</label>
+                <input type="text" id="title" name="title" class="form-control" value="{{ job.title }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Açıklama *</label>
+                <textarea id="description" name="description" class="form-control" required>{{ job.description }}</textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="location">Lokasyon *</label>
+                <input type="text" id="location" name="location" class="form-control" value="{{ job.location }}" required>
+            </div>
+
+            <div class="form-buttons">
+                <button type="submit" class="btn btn-primary">💾 Kaydet</button>
+                <a href="{% url 'job_list' %}" class="btn btn-secondary">❌ İptal</a>
+            </div>
+        </form>
     </div>
-
-    <h1>{% if job %}İş İlanı Düzenle{% else %}Yeni İş İlanı Ekle{% endif %}</h1>
-
-    <form method="POST">
-        {% csrf_token %}
-
-        <div class="form-group">
-            <label for="title">İş Başlığı:</label>
-            <input type="text" id="title" name="title" value="{{ job.title }}" required>
-        </div>
-
-        <div class="form-group">
-            <label for="description">Açıklama:</label>
-            <textarea id="description" name="description" required>{{ job.description }}</textarea>
-        </div>
-
-        <div class="form-group">
-            <label for="location">Lokasyon:</label>
-            <input type="text" id="location" name="location" value="{{ job.location }}" required>
-        </div>
-
-        <button type="submit">Kaydet</button>
-        <a href="{% url 'job_list' %}" class="cancel">İptal</a>
-    </form>
-</body>
-</html>
+</div>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}İşe Alım Sistemi{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+               <img src="{% static 'images/logo.png' %}" alt="Logo" class="logo">
+                <span class="brand-name">İşe Alım Sistemi</span>
+            </div>
+            <div class="nav-links">
+                <a href="{% url 'home' %}" class="nav-link">Ana Sayfa</a>
+                <a href="{% url 'job_list' %}" class="nav-link">İş İlanları</a>
+                <a href="{% url 'candidate_list' %}" class="nav-link">Adaylar</a>
+                <a href="{% url 'application_list' %}" class="nav-link">Başvurular</a>
+                <a href="/admin/" class="nav-link admin-link" target="_blank">Admin Panel</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 İşe Alım Sistemi. Tüm hakları saklıdır.</p>
+        </div>
+    </footer>
+
+    <script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

@@ -29,7 +29,7 @@ SESSION_COOKIE_SECURE = True
 SECRET_KEY = 'django-insecure-f_zrym7-m4&ocs(4^i8jq8$r@_(txdn53*8-7^0m67&r7toi+e'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG', 'False') == 'True'
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -134,7 +134,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR / 'static']  # Bu satır olmalı
+STATIC_ROOT = BASE_DIR / 'staticfiles'     # Bu da olmalı
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
